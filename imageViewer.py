@@ -19,7 +19,7 @@ if len(sys.argv) < 2:
 
 imageFilename = Path(sys.argv[1])
 if not imageFilename.exists():
-  print("Image file does not exist.")
+  print("Image file {} does not exist.".format(imageFilename))
   sys.exit(1)
 
 changeTimer = None
@@ -52,6 +52,10 @@ def refreshImage():
   image = Image.open(imageFilename)
   changeImageSize(imageSize)
   print("Refreshed!")
+
+
+def quitApp(evt):
+  sys.exit(0)
 
 class FileChangedHandler:
   def __init__(self, filename):
@@ -98,6 +102,7 @@ def mainWindow():
   window.geometry("{}x{}".format(imageSize[0], imageSize[1]))
   window.bind("<+>", plusPressed)
   window.bind("<minus>", minusPressed)
+  window.bind("<Escape>", quitApp)
 
   observer = watchdog.observers.Observer()
   fileChangedHandler = FileChangedHandler(imageFilename)
